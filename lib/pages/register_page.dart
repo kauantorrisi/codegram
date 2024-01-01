@@ -1,22 +1,71 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
+
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:social_media_app/components/my_button.dart';
 import 'package:social_media_app/components/my_textfield.dart';
+import 'package:social_media_app/helper/helper_functions.dart';
+import 'package:social_media_app/pages/login_page.dart';
 
-class RegisterPage extends StatelessWidget {
+class RegisterPage extends StatefulWidget {
   final void Function()? onTap;
 
   RegisterPage({super.key, this.onTap});
 
+  @override
+  State<RegisterPage> createState() => _RegisterPageState();
+}
+
+class _RegisterPageState extends State<RegisterPage> {
   // text controllers
   final TextEditingController usernameController = TextEditingController();
+
   final TextEditingController emailController = TextEditingController();
+
   final TextEditingController passwordController = TextEditingController();
+
   final TextEditingController confirmPasswordController =
       TextEditingController();
 
   // register method
-  void register() {}
+  void registerUser() async {
+    // show loading circle
+    showDialog(
+      context: context,
+      builder: (ctx) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+    // make sure passwords match
+    if (passwordController.text != confirmPasswordController.text) {
+      // pop loading circle
+      Navigator.pop(context);
+      // show error message to user
+      displayMessageToUser(context, 'As senhas estão diferentes');
+    }
+    // if passwords do match
+    else {
+      // try creating the user
+      try {
+        // create the user
+        UserCredential? userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+        // pop loading circle
+        Navigator.pop(context);
+      } on FirebaseAuthException catch (e) {
+        // pop loading circle
+        Navigator.pop(context);
+
+        // display error message to user
+        displayMessageToUser(context, e.code);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -84,7 +133,7 @@ class RegisterPage extends StatelessWidget {
               // egister button
               MyButton(
                 text: 'Registrar',
-                onTap: register,
+                onTap: registerUser,
               ),
 
               const SizedBox(height: 25),
@@ -100,7 +149,7 @@ class RegisterPage extends StatelessWidget {
                     ),
                   ),
                   GestureDetector(
-                    onTap: onTap,
+                    onTap: widget.onTap,
                     child: const Text(
                       'Faça login aqui',
                       style: TextStyle(fontWeight: FontWeight.bold),

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "645220796780",
+    "project_id": "codegram-223f3",
+    "storage_bucket": "codegram-223f3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:645220796780:android:149e46e6bab0c9e9d1cb49",
+        "android_client_info": {
+          "package_name": "com.example.social_media_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1rastWtDkP7oUtU0sj20R35T6Sp9-ugw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
